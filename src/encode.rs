@@ -18,7 +18,7 @@ pub fn encode(moves: [u8; 9]) -> u32 {
 }
 
 pub fn encode_dialog() -> [u8; 9] {
-    println!("Please enter 9 numbers (1-9) separated by spaces:");
+    println!("Please enter 1 to 9 numbers (1-9) separated by spaces:");
 
     loop {
         let mut input_line = String::new();
@@ -33,9 +33,11 @@ pub fn encode_dialog() -> [u8; 9] {
             .filter_map(|s| u8::from_str(s).ok())
             .collect();
 
-        if parts.len() == 9 {
+        if parts.len() <= 9 && parts.len() >= 1 {
             let mut array = [0u8; 9];
-            array.copy_from_slice(&parts);
+            let num_elements_to_copy = parts.len();
+            array[..num_elements_to_copy]
+                .copy_from_slice(&parts[..num_elements_to_copy]);
             return array;
         } else {
             println!("Invalid input. Please enter exactly 9 numbers separated by spaces.");
