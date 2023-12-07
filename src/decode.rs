@@ -79,3 +79,16 @@ pub fn draw_board(parts: [u8; 9]) {
     }
     println!(); // Newline at the end of the board
 }
+
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_decoding() {
+        let input = 2657435;
+
+        let result = decode(input);
+
+        assert_eq!(result, [1, 4, 2, 1, 4, 4, 3, 1, 1]);
+    }
+}
