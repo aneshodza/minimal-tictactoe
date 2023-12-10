@@ -27,6 +27,7 @@ fn main() {
             let encoded_number = encode::encode(moves);
 
             println!("Your encoded number is: {}", encoded_number);
+            println!("It's binary representation: {:0>25b} (25 bit)", encoded_number);
             draw_board(moves);
         },
         "3" => {
