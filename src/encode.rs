@@ -18,11 +18,6 @@ pub fn encode(moves: &Vec<u8>) -> u32 {
         }
     }
 
-    println!("{}", output);
-    println!("{:0>25b}", output);
-    let bit_count = output.ilog2() + 1;
-
-    println!("bitcount: {}", bit_count);
     return output;
 }
 
@@ -55,10 +50,19 @@ mod tests {
 
     #[test]
     fn test_encoding() {
-        let input = [1, 4, 2, 1, 4, 4, 3, 1, 1];
+        let input = [4, 7, 7, 4, 1, 3, 1, 2, 1];
 
         let result = encode(&input.to_vec());
 
-        assert_eq!(result, 18925692);
+        assert_eq!(result, 19378961);
+    }
+
+    #[test]
+    fn check_running_length_encoding() {
+        let input = [3, 2, 6];
+
+        let result = encode(&input.to_vec());
+
+        assert_eq!(result, 3213);
     }
 }
