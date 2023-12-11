@@ -1,24 +1,26 @@
 use std::io;
 use std::str::FromStr;
 
-pub fn decode(input: u32) -> [u8; 9] {
-    return [
-        (input >> 21 & 0b1111) as u8,
-        (input >> 17 & 0b1111) as u8,
-        (input >> 14 & 0b111) as u8,
-        (input >> 11 & 0b111) as u8,
-        (input >> 8 & 0b111) as u8,
-        (input >> 5 & 0b111) as u8,
-        (input >> 3 & 0b11) as u8,
-        (input >> 1 & 0b11) as u8,
-        (input & 0b1) as u8,
-    ];
+use crate::constants::{BIT_COUNTS, BIT_SIZES};
+
+pub fn decode(input: u32) -> Vec<u8> {
+    println!("{:0>25b}", input);
+    let bit_count = input.ilog2() + 1;
+
+    let mut move_count = *BIT_COUNTS().get(&bit_count).unwrap();
+    if move_count == 8 {
+        move_count += (input >> BIT_SIZES.iter().sum::<u8>() & 0b0001) as u8;
+    }
+
+    println!("{}", move_count);
+
+    return Vec::new();
 }
 
 pub fn decode_dialog() -> u32 {
     let mut field = String::new();
 
-    println!("Please enter your game (in decimal)");
+    println!("Please enter your game (in binary)");
 
     loop {
         io::stdin()
