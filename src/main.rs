@@ -28,8 +28,9 @@ fn main() {
             let moves = encode::encode_dialog();
             let encoded_number = encode::encode(&moves);
 
+            let bit_count = encoded_number.ilog2() + 1;
             println!("Your encoded number is: {}", encoded_number);
-            println!("It's binary representation: {:0>25b} (max 25 bit)", encoded_number);
+            println!("It's binary representation: {:b} ({} bit)", encoded_number, bit_count);
             draw_board(moves);
         },
         "3" => {
