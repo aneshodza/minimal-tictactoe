@@ -1,23 +1,27 @@
 use std::io;
 use std::str::FromStr;
 
-pub fn encode(moves: [u8; 9]) -> u32 {
-    let mut output: u32 = 0;
+use crate::constants::BIT_SIZES;
 
-    output |= (moves[0] as u32) << 21;
-    output |= (moves[1] as u32) << 17;
-    output |= (moves[2] as u32) << 14;
-    output |= (moves[3] as u32) << 11;
-    output |= (moves[4] as u32) << 8;
-    output |= (moves[5] as u32) << 5;
-    output |= (moves[6] as u32) << 3;
-    output |= (moves[7] as u32) << 1;
-    output |= moves[8] as u32;
+pub fn encode(moves: &Vec<u8>) -> u32 {
+    let mut output: u32 = 0;
+    let length = moves.len();
+    let mut shift: u8 = BIT_SIZES[..length].iter().sum();
+
+    output |= (length as u32) << shift;
+    shift -= BIT_SIZES[0];
+
+    for (idx, element) in moves.iter().enumerate() {
+        output |= (((element - 1) as u32) << shift) as u32;
+        if shift > 0 {
+            shift -= BIT_SIZES[idx + 1];
+        }
+    }
 
     return output;
 }
 
-pub fn encode_dialog() -> [u8; 9] {
+pub fn encode_dialog() -> Vec<u8> {
     println!("Please enter 1 to 9 numbers (1-9) separated by spaces:");
 
     loop {
@@ -34,11 +38,7 @@ pub fn encode_dialog() -> [u8; 9] {
             .collect();
 
         if parts.len() <= 9 && parts.len() >= 1 {
-            let mut array = [0u8; 9];
-            let num_elements_to_copy = parts.len();
-            array[..num_elements_to_copy]
-                .copy_from_slice(&parts[..num_elements_to_copy]);
-            return array;
+            return parts;
         } else {
             println!("Invalid input. Please enter exactly 9 numbers separated by spaces.");
         }
@@ -50,10 +50,19 @@ mod tests {
 
     #[test]
     fn test_encoding() {
-        let input = [1, 4, 2, 1, 4, 4, 3, 1, 1];
+        let input = [4, 7, 7, 4, 1, 3, 1, 2, 1];
 
-        let result = encode(input);
+        let result = encode(&input.to_vec());
 
-        assert_eq!(result, 2657435);
+        assert_eq!(result, 19378961);
+    }
+
+    #[test]
+    fn check_running_length_encoding() {
+        let input = [3, 2, 6];
+
+        let result = encode(&input.to_vec());
+
+        assert_eq!(result, 3213);
     }
 }

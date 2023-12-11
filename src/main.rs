@@ -3,6 +3,8 @@ use std::io;
 mod decode;
 mod encode;
 
+mod constants;
+
 fn main() {
     println!("Tictactoe encoded in only 25 bits");
     println!("What do you want to do?");
@@ -24,10 +26,10 @@ fn main() {
         },
         "2" => {
             let moves = encode::encode_dialog();
-            let encoded_number = encode::encode(moves);
+            let encoded_number = encode::encode(&moves);
 
             println!("Your encoded number is: {}", encoded_number);
-            println!("It's binary representation: {:0>25b} (25 bit)", encoded_number);
+            println!("It's binary representation: {:0>25b} (max 25 bit)", encoded_number);
             draw_board(moves);
         },
         "3" => {
@@ -39,7 +41,7 @@ fn main() {
     }
 }
 
-pub fn draw_board(parts: [u8; 9]) {
+pub fn draw_board(parts: Vec<u8>) {
     let mut board = ['_'; 9];
     let mut turn = 'X'; // Start with 'X'
 
