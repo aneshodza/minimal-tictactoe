@@ -6,7 +6,7 @@ mod encode;
 mod constants;
 
 fn main() {
-    println!("Tictactoe encoded in only 25 bits");
+    println!("Tictactoe encoded in only 25 bits (at most)");
     println!("What do you want to do?");
     println!("  1. Decode your game");
     println!("  2. Encode a game");

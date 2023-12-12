@@ -103,7 +103,8 @@ O O X
 X O X
 ```
 
-## How does it work?
+## Encoding the game
+### Getting the moves
 The game numbers all squares on the ticktacktoe board from one to nine, as follows:
 ```
  1 | 2 | 3
@@ -127,18 +128,20 @@ In the end, there should be an Array of nine numbers:
 ```
 [1, 4, 5, 3, 2, 3, 2, 1, 1]
 ```
-And those numbers get parsed into a 25-bit number, where every number is put one after the other in binary:
+Every index of the array gets subtracted by one, as the binary representation can be shorter that way:
 ```
-0001 0100 101 011 010 011 10 01 1 = (2710131 in binary)
- 1    4    5   3   2   3  2  1  1
-
-The board:
-  X O X
-  O O X
-  X O X
+[0, 3, 4, 2, 1, 2, 1, 0, 0]
 ```
-This works for both sides, as the number contains the game and its history.
-
+### Parsing them into a 25-bit number
+#### Length of the moves
+Every number occupies as little bits as are needed to represent all options.
+As the board starts with nine options (zero to eight), the first number needs four bit.
+The second then only needs three, as there are only eight options left (zero to seven), etc.
+The constant `BIT_SIZES` is used to represent that:
+```rust
+pub const BIT_SIZES: [u8; 9] = [4, 3, 3, 3, 3, 2, 2, 1, 0];
+```
+#### Encoding the game length
 ## Drawbacks
 The obvious drawback is that a Huffman-Tree would be much more efficient. Certain values are impossible or get skipped entirely. On top of that: This encoding is fixed-length, as a game can also end after only four moves. The games don't always go the entire way.  
 The purpose of this project is not a practical encoding, but rather just a proof-of-concept on a thought experiment I had.
