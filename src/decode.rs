@@ -6,7 +6,7 @@ use crate::constants::BIT_SIZES;
 pub fn decode(input: u32) -> Vec<u8> {
     let bit_count: u8 = (input.ilog2() + 1) as u8;
 
-    let mut move_count = find_index(bit_count);
+    let mut move_count = find_index(bit_count) + 1;
 
     let mut shift_amout = 0;
     let mut result: Vec<u8> = Vec::new();
@@ -24,10 +24,10 @@ pub fn decode(input: u32) -> Vec<u8> {
 }
 
 fn find_index(bit_count: u8) -> u8 {
-    let mut sum = 0;
+    let mut sum = 1;
     for (index, &value) in BIT_SIZES.iter().enumerate() {
         sum += value as u8;
-        if sum >= bit_count {
+        if sum == bit_count {
             return index as u8;
         }
     }
@@ -60,7 +60,7 @@ mod tests {
 
     #[test]
     fn test_decoding() {
-        let input = 19378961;
+        let input = 5203490;
 
         let result = decode(input);
 
@@ -69,10 +69,17 @@ mod tests {
 
     #[test]
     fn test_running_length_decoding() {
-        let input = 3213;
+        let input = 1165;
 
         let result = decode(input);
 
         assert_eq!(result, [3, 2, 6]);
+    }
+
+    #[test]
+    fn test_find_index() {
+        let input = 11;
+        let result = find_index(input) + 1;
+        assert_eq!(result, 3);
     }
 }

@@ -1,14 +1,13 @@
 use std::io;
 use std::str::FromStr;
 
-use crate::constants::BIT_SIZES;
+use crate::constants::{BIT_SIZES, SIGNIFIER};
 
 pub fn encode(moves: &Vec<u8>) -> u32 {
     let mut output: u32 = 0;
-    let signifier: u32 = 1;
     let mut shift: u8 = BIT_SIZES[..moves.len()].iter().sum();
 
-    output |= (signifier) << shift;
+    output |= (SIGNIFIER as u32) << shift;
     shift -= BIT_SIZES[0];
 
     for (idx, element) in moves.iter().enumerate() {
@@ -54,7 +53,7 @@ mod tests {
 
         let result = encode(&input.to_vec());
 
-        assert_eq!(result, 19378961);
+        assert_eq!(result, 5203490);
     }
 
     #[test]
@@ -63,6 +62,6 @@ mod tests {
 
         let result = encode(&input.to_vec());
 
-        assert_eq!(result, 3213);
+        assert_eq!(result, 1165);
     }
 }
