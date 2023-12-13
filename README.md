@@ -186,6 +186,7 @@ for (idx, element) in moves.iter().enumerate() {
 }
 ```
 And visually, every move does about this:
+
 ![docs/loop.png](docs/loop.png)
 
 ## Decoding the game
