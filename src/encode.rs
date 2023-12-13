@@ -5,10 +5,10 @@ use crate::constants::BIT_SIZES;
 
 pub fn encode(moves: &Vec<u8>) -> u32 {
     let mut output: u32 = 0;
-    let length = moves.len();
-    let mut shift: u8 = BIT_SIZES[..length].iter().sum();
+    let signifier: u32 = 1;
+    let mut shift: u8 = BIT_SIZES[..moves.len()].iter().sum();
 
-    output |= (length as u32) << shift;
+    output |= (signifier) << shift;
     shift -= BIT_SIZES[0];
 
     for (idx, element) in moves.iter().enumerate() {
