@@ -190,6 +190,6 @@ And visually, every move does about this:
 ![docs/loop.png](docs/loop.png)
 
 ## Decoding the game
-
+Coming soon...
 
 *Made with <3 by Anes Hodza*
